@@ -10,19 +10,19 @@
 console.log('Hello World from Webpacker')
 
 import Vue from 'vue/dist/vue.esm'
-import paginate from '../components/paginate.vue'
+// import paginate from '../components/paginate.vue'
 import posts from '../components/posts.vue'
 
 var app = new Vue({
   el: '#app',
   components: {
-    'paginate': paginate,
+    // 'paginate': paginate,
     'posts': posts
   },
   methods: {
-    clickCallback: function(pageNum) {
-      console.log(pageNum)
-    }
-  },
+    // clickCallback: function(pageNum) {
+    //   posts.offset = pageNum
+    // }
+  }
 });
 

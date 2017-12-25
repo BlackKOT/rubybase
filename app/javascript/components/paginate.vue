@@ -27,6 +27,7 @@
 <script>
 
 module.exports = {
+  name: "paginate",
   props: {
     pageCount: {
       type: Number,

@@ -3,20 +3,41 @@
         <input placeholder="Please input search substring here ..." type="text" v-model="searchString" />
 
         <ul>
-            <li v-for="post in filteredPosts">
+            <li v-for="post in paginated(filteredPosts) ">
                 <a v-bind:href="post.path">
                     {{post.name}}
 
-                </a></li></ul></form>
+                </a></li></ul>
+    </form>
+    <div>
+        <paginate :click-handler="clickCallback" :page-count="10" container-class="pagination" next-text="next" prev-text="prev">
+          <span slot="prevContent">
+            Changed previous button
+          </span>
+
+            <span slot="nextContent">
+            Changed next button
+          </span>
+        </paginate>
+    </div>
+
 </template>
 
 <script>
-  module.exports = {
 
+//  const paginate = require('../components/paginate.vue');
+  import paginate from './paginate.vue'
+
+  export default {
+    components: {
+       'paginate': paginate,
+    },
     data: function() {
       return {
         posts: [],
         searchString: "",
+        offset: 1,
+        limit: 10
       }
     },
 //  created: function () {
@@ -25,8 +46,23 @@
 //    this.tick();
 //    window.setInterval( this.tick, 60000 );
 //  },
+    filters: {
+      uppercase(post){
+        return post.toUpperCase();
+      }
+    },
+    methods:{
+      paginated(posts_array) {
+        var shift = this.offset * this.limit;
+        return posts_array.slice(shift, shift + this.limit)
+      },
 
+      clickCallback: function(pageNum) {
+        posts.offset = pageNum
+      }
+    },
     created: function() {
+      console.log('Creted!!!!!!');
       var that = this;
       $.ajax({
         url: '/posts.json',
@@ -55,8 +91,10 @@
 
 
         return posts_array
-      }
-    }
+      },
+
+    },
+
 //  methods: {
 //    tick: function() {
 //      console.log( '[clock] tick' );
