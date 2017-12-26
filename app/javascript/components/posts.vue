@@ -69,8 +69,7 @@
           that.posts = res;
         }
       });
-      window.bus.$on('limit', function (val) {
-        console.log("Num = ", Number(val));
+      this.$on('limit', function (val) {
         that.limit = Number(val);
 
       })

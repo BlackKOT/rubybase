@@ -114,12 +114,12 @@ module.exports = {
     },
     limit: function (newAmount) {
       this.limit = newAmount;
-      window.bus.$emit('limit', Number(newAmount))
+      this.$parent.$emit('limit', Number(newAmount))
     },
 
   },
   created: function() {
-    window.bus.$emit('limit', this.limit)
+    this.$parent.$emit('limit', this.limit)
   },
   computed: {
     pages: function () {
