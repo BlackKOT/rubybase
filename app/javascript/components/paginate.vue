@@ -102,11 +102,12 @@ module.exports = {
       this.selected = this.forcePage
     }
   },
-//  watch: {
-//    clickHandler: function (func) {
-//      this.clickHandler = window[func]
-//    }
-//  },
+  watch: {
+    pageCount: function (newAmount) {
+      this.pageCount = newAmount;
+      this.selected = this.initialPage = 0;
+    }
+  },
   computed: {
     pages: function () {
       let items = {}

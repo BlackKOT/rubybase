@@ -1,26 +1,27 @@
 <template>
-    <form>
-        <input placeholder="Please input search substring here ..." type="text" v-model="searchString" />
-
-        <ul>
-            <li v-for="post in paginated(filteredPosts) ">
-                <a v-bind:href="post.path">
-                    {{post.name}}
-
-                </a></li></ul>
-    </form>
     <div>
-        <paginate :click-handler="clickCallback" :page-count="10" container-class="pagination" next-text="next" prev-text="prev">
-          <span slot="prevContent">
-            Changed previous button
-          </span>
+        <form>
+            <input placeholder="Please input search substring here ..." type="text" v-model="searchString" />
 
-            <span slot="nextContent">
-            Changed next button
-          </span>
-        </paginate>
+            <ul>
+                <li v-for="post in paginated(filteredPosts) ">
+                    <a v-bind:href="post.path">
+                        {{post.name}}
+
+                    </a></li></ul>
+        </form>
+        <div>
+            <paginate :click-handler="clickCallback" v-bind:page-count="pagesAmount" container-class="pagination" next-text="next" prev-text="prev" ref="paginator">
+              <span slot="prevContent">
+                Changed previous button
+              </span>
+
+                <span slot="nextContent">
+                Changed next button
+              </span>
+            </paginate>
+        </div>
     </div>
-
 </template>
 
 <script>
@@ -36,7 +37,7 @@
       return {
         posts: [],
         searchString: "",
-        offset: 1,
+        offset: 0,
         limit: 10
       }
     },
@@ -58,11 +59,10 @@
       },
 
       clickCallback: function(pageNum) {
-        posts.offset = pageNum
+        this.offset = pageNum-1
       }
     },
     created: function() {
-      console.log('Creted!!!!!!');
       var that = this;
       $.ajax({
         url: '/posts.json',
@@ -70,7 +70,7 @@
           that.posts = res;
         }
       });
-//      true
+
     },
     computed: {
       filteredPosts: function () {
@@ -88,10 +88,13 @@
             return item;
           }
         })
-
-
+        this.offset = 0;
         return posts_array
       },
+      pagesAmount(){
+        return Math.ceil((this.filteredPosts || this.posts).length / this.limit)
+      }
+
 
     },
 
