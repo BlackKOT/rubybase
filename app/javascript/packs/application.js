@@ -7,11 +7,12 @@
 // To reference this file, add <%= javascript_pack_tag 'application' %> to the appropriate
 // layout file, like app/views/layouts/application.html.erb
 
-console.log('Hello World from Webpacker')
-
+console.log('Hello World from Webpacker');
+window.bus = new Vue();
 import Vue from 'vue/dist/vue.esm'
 // import paginate from '../components/paginate.vue'
 import posts from '../components/posts.vue'
+
 
 var app = new Vue({
   el: '#app',

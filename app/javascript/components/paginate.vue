@@ -33,6 +33,10 @@ module.exports = {
       type: Number,
       required: true
     },
+    itemsLimit: {
+      type: Number,
+      required: true
+    },
     initialPage: {
       type: Number,
       default: 0
@@ -93,6 +97,7 @@ module.exports = {
   },
   data() {
     return {
+      limit: this.itemsLimit,
       selected: this.initialPage,
     }
   },
@@ -106,7 +111,15 @@ module.exports = {
     pageCount: function (newAmount) {
       this.pageCount = newAmount;
       this.selected = this.initialPage = 0;
-    }
+    },
+    limit: function (newAmount) {
+      this.limit = newAmount;
+      window.bus.$emit('limit', Number(newAmount))
+    },
+
+  },
+  created: function() {
+    window.bus.$emit('limit', this.limit)
   },
   computed: {
     pages: function () {

@@ -11,7 +11,7 @@
                     </a></li></ul>
         </form>
         <div>
-            <paginate :click-handler="clickCallback" v-bind:page-count="pagesAmount" container-class="pagination" next-text="next" prev-text="prev" ref="paginator">
+            <paginate :click-handler="clickCallback" :page-count="pagesAmount" :items-limit="8" container-class="pagination" next-text="next" prev-text="prev" ref="paginator">
               <span slot="prevContent">
                 Changed previous button
               </span>
@@ -26,7 +26,6 @@
 
 <script>
 
-//  const paginate = require('../components/paginate.vue');
   import paginate from './paginate.vue'
 
   export default {
@@ -47,20 +46,20 @@
 //    this.tick();
 //    window.setInterval( this.tick, 60000 );
 //  },
-    filters: {
-      uppercase(post){
-        return post.toUpperCase();
-      }
-    },
-    methods:{
+//    filters: {
+//      uppercase(post){
+//        return post.toUpperCase();
+//      }
+//    },
+    methods: {
       paginated(posts_array) {
         var shift = this.offset * this.limit;
         return posts_array.slice(shift, shift + this.limit)
       },
 
-      clickCallback: function(pageNum) {
+      clickCallback(pageNum) {
         this.offset = pageNum-1
-      }
+      },
     },
     created: function() {
       var that = this;
@@ -70,7 +69,11 @@
           that.posts = res;
         }
       });
+      window.bus.$on('limit', function (val) {
+        console.log("Num = ", Number(val));
+        that.limit = Number(val);
 
+      })
     },
     computed: {
       filteredPosts: function () {
