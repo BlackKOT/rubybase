@@ -1,0 +1,12 @@
+<div class="post_viewer">
+
+  <h3><%= @post.category.name%></h3>
+  <%= @post.pretty_body.html_safe %>
+  <p>
+    <% @post.tags.each do |tag| %>
+      <span class="tag_name">
+        <%= tag.name %>
+      </span>
+    <% end %>
+  </p>
+</div>

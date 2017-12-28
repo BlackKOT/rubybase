@@ -1,0 +1,24 @@
+<%= form_for (@post || pos.new), multipart: true do |f| %>
+
+<div class="form-group row">
+  <div class="col-xs-6">
+    <div>
+      <%= f.label :category %>
+      <%= f.select :category_id, options_for_select(Category.all.map{|cat| [cat.name, cat.id]}) %>
+    </div>
+
+    <div>
+      <%= f.label :name %>
+      <%= f.text_field :name %>
+    </div>
+
+    <div>
+      <%= f.label :body %>
+      <%= f.text_area :body, class: 'form-control tinymce' %>
+    </div>
+     tinymce_assets
+     tinymce
+  </div>
+</div>
+    <%= f.button type: :submit, class: 'btn btn-default' %>
+<% end %>

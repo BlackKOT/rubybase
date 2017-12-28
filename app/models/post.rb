@@ -10,7 +10,7 @@ class Post < ActiveRecord::Base
   validates :name, :body, :category_id, presence: true
 
   #TODO enable after changing code to pretty_preview integer
-  # after_validation :unescape_and_prepare
+  after_validation :unescape_and_prepare
 
   def as_json(options)
     # this example ignores the user's options
@@ -21,13 +21,17 @@ class Post < ActiveRecord::Base
     Rails.application.routes.url_helpers.post_path(self)
   end
 
+  def pretty_preview_text
+    pretty_body[0..pretty_preview]
+  end
+
   private
 
   def unescape_and_prepare
     self.body = Cleaner.prepare_text(CGI.unescape(self.body))
 
     if errors.empty?
-      self.pretty_preview = Syntaxer.prepare_html(Previewer.prepare_preview(self.body), false)  # .gsub(/<img[^>]*>/, '')
+      self.pretty_preview = Syntaxer.prepare_html(Previewer.prepare_preview(self.body), false).length  # .gsub(/<img[^>]*>/, '')
       self.pretty_body = Syntaxer.prepare_html(self.body)  # .gsub(/<img[^>]*>/, '')
     end
   end

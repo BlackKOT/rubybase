@@ -1,11 +1,11 @@
 <template>
-    <div>
+    <div v-if="is_index">
         <form>
             <input placeholder="Please input search substring here ..." type="text" v-model="searchString" />
 
             <ul>
                 <li v-for="post in paginated(filteredPosts) ">
-                    <a v-bind:href="post.path">
+                    <a v-bind:href="post.path" @click.stop.prevent="display_post(post.path)">
                         {{post.name}}
 
                     </a></li></ul>
@@ -22,6 +22,15 @@
             </paginate>
         </div>
     </div>
+    <div v-else-if="!is_index">
+        <div v-html="post_html">
+
+        </div>
+        <a @click.stop.prevent="return_back()">
+          Back to post list
+        </a>
+    </div>
+
 </template>
 
 <script>
@@ -37,7 +46,9 @@
         posts: [],
         searchString: "",
         offset: 0,
-        limit: 10
+        limit: 10,
+        is_index: true,
+        post_html: ""
       }
     },
 //  created: function () {
@@ -52,6 +63,23 @@
 //      }
 //    },
     methods: {
+      return_back() {
+        history.back();
+      },
+      display_post(path) {
+        this.is_index = false;
+        history.pushState({}, null, path);
+        var that = this;
+        $.ajax({
+          url: path + '.json',
+          success: function(res) {
+            that.post_html = res.data;
+            console.log(that.post_html);
+            that.post_html
+          }
+        });
+
+      },
       paginated(posts_array) {
         var shift = this.offset * this.limit;
         return posts_array.slice(shift, shift + this.limit)
@@ -72,7 +100,10 @@
       this.$on('limit', function (val) {
         that.limit = Number(val);
 
-      })
+      });
+      window.onpopstate = function(e){
+        that.is_index = true
+      };
     },
     computed: {
       filteredPosts: function () {
@@ -109,6 +140,10 @@
 //    }
 //  }
   };
+
+
+
+
 
 </script>
 
