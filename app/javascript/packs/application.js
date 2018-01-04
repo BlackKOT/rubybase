@@ -8,16 +8,21 @@
 // layout file, like app/views/layouts/application.html.erb
 
 console.log('Hello World from Webpacker');
+console.log("Webpack suuuuuucks!");
 import Vue from 'vue/dist/vue.esm'
 // import paginate from '../components/paginate.vue'
 import posts from '../components/posts.vue'
+import post_form from '../components/post_form.vue'
 
+import VeeValidate from 'vee-validate';
+Vue.use(VeeValidate);
 
 var app = new Vue({
   el: '#app',
   components: {
     // 'paginate': paginate,
-    'posts': posts
+    'posts': posts,
+    'post_form': post_form,
   },
   methods: {
     // clickCallback: function(pageNum) {
@@ -25,4 +30,5 @@ var app = new Vue({
     // }
   }
 });
+
 

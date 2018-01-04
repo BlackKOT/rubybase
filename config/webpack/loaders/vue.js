@@ -11,3 +11,23 @@ module.exports = {
     options: { extractCSS }
   }]
 }
+// module.exports = [{
+//   test: /\.vue(\.erb)?$/,
+//   use: [{
+//     loader: 'vue-loader',
+//     options: { extractCSS }
+//   }]
+// },{
+//   test: /\.css$/,
+//   use: [ 'style-loader', 'css-loader' ]
+// }]
+
+//
+// module: {
+//   rules: [
+//     {
+//       test: /\.css$/,
+//       use: [ 'style-loader', 'css-loader' ]
+//     }
+//   ]
+// }

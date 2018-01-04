@@ -4,11 +4,16 @@
   "dependencies": {
     "@rails/webpacker": "^3.2.0",
     "coffeescript": "1.12.7",
+    "jquery": "^3.2.1",
+    "select2": "^4.0.6-rc.1",
+    "vee-validate": "^2.0.0-beta.17",
     "vue": "^2.5.13",
     "vue-loader": "^13.6.1",
     "vue-template-compiler": "^2.5.13"
   },
   "devDependencies": {
+    "css-loader": "0.28.7",
+    "style-loader": "0.19.1",
     "webpack-dev-server": "^2.9.7"
   }
 }

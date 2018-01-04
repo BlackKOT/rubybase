@@ -4,8 +4,8 @@
             <input placeholder="Please input search substring here ..." type="text" v-model="searchString" />
 
             <ul>
-                <li v-for="post in paginated(filteredPosts) ">
-                    <a v-bind:href="post.path" @click.stop.prevent="display_post(post.path)">
+                <li v-for="post in paginated(filteredPosts)">
+                    <a :href="post.path" @click.stop.prevent="display_post(post.path)">
                         {{post.name}}
 
                     </a></li></ul>
