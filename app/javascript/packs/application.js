@@ -8,7 +8,7 @@
 // layout file, like app/views/layouts/application.html.erb
 
 console.log('Hello World from Webpacker');
-console.log("Webpack suuuuuucks!");
+// console.log("Webpack suuuuuucks!");
 import Vue from 'vue/dist/vue.esm'
 // import paginate from '../components/paginate.vue'
 import posts from '../components/posts.vue'

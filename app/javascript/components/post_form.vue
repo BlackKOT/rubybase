@@ -1,34 +1,37 @@
 <template>
     <div>
-        <form id="new_post" :action="path" accept-charset="UTF-8" :method="method" class="new_post">
+        <form id="new_post" :action="path" accept-charset="UTF-8" :method="method" class="new_post" @submit.prevent="validate" >
             <input name="utf8" value="✓" type="hidden">
             <input name="authenticity_token" :value="csrf_token" type="hidden">
             <div class="form-group row">
                 <div class="col-xs-6">
                     <div>
                         <label for="post_category">Category</label>
-                        <!--<select2 v-model="category_id" v-validate="category_id" data-rules="required" name="post[category_id]" id="post_category_id">-->
-                        <select2 :options="categories_list" v-model="category_id" name="post[category_id]" id="post_category_id">
-                            <option disabled selected value=""> -- select an option -- </option>
-                            <!--<option v-for="category in categories_list" :value="category.id">{{category.name}}</option>-->
+                        <select2 :options="categories_list"
+                                 data-vv-name="category_id"
+                                 v-validate="'required'"
+                                 v-model="category_id"
+                                 name="post[category_id]"
+                                 id="post_category_id"
+                                 placeholder="Select category" >
                         </select2>
                         <p class="text-danger" v-if="errors.has('category_id')">{{ errors.first('category_id') }}</p>
                     </div>
                     <div>
                         <label for="post_name">Name</label>
-                        <input v-model="post_name" v-validate="post_name" data-rules="required" name="post[name]" id="post_name" type="text">
+                        <input v-model="post_name" data-vv-name="post_name" v-validate="'required'" name="post[name]" id="post_name" type="text">
                         <p class="text-danger" v-if="errors.has('post_name')">{{ errors.first('post_name') }}</p>
                     </div>
                     <div>
                         <label for="post_body">Body</label>
-                        <textarea v-model="post_body" v-validate="post_body" data-rules="required" name="post[body]" id="post_body" class="form-control tinymce"></textarea>
+                        <textarea v-model="post_body" data-vv-name="post_body" v-validate="'required'" name="post[body]" id="post_body" class="form-control tinymce"></textarea>
                         <p class="text-danger" v-if="errors.has('post_body')">{{ errors.first('post_body') }}</p>
                     </div>
                     tinymce_assets
                     tinymce
                 </div>
             </div>
-            <button name="button" type="submit" class="btn btn-default">Create Post</button>
+            <button name="button" type="submit"  class="btn btn-default">Create Post</button>
         </form>
     </div>
 </template>
@@ -62,7 +65,15 @@
       }
     },
     methods: {
+      validate() {
+        this.$validator.validateAll().then(result => {
+          if (result) {
+            return alert('success');
+          }
 
+          alert('failure');
+        })
+      },
     },
     created: function() {
       this.csrf_token = document.getElementsByName('csrf-token')[0].getAttribute('content');

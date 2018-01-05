@@ -13,13 +13,19 @@
   import 'select2/dist/css/select2.css';
 
   export default {
-    props: ['options', 'value'],
+    props: {
+      options: {},
+      value: {},
+      placeholder: {
+        default: false
+      },
+    },
     mounted: function () {
       var vm = this;
       $(this.$el).ready(() => {
         $(this.$el)
         // init select2
-          .select2({data: this.options})
+          .select2({data: this.options, placeholder: vm.placeholder})
           .val(this.value)
           .trigger('change')
           // emit event on change.
@@ -44,3 +50,9 @@
   }
 
 </script>
+
+<style>
+    .select2 {
+        min-width: 200px;
+    }
+</style>
