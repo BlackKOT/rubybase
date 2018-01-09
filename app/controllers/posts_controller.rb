@@ -1,5 +1,5 @@
 class PostsController < ApplicationController
-  before_action :find_post, only: [:show, :edit, :delete]
+  before_action :find_post, only: [:show, :edit, :update, :delete]
   def index
     @posts = Post.order(id: :desc)
     respond_to do |format|
@@ -28,6 +28,16 @@ class PostsController < ApplicationController
     end
   end
 
+  def edit; end
+
+  def update
+      if @post.update_attributes(post_params)
+        redirect_to [@post]
+      else
+        render :edit
+      end
+  end
+
   private
 
   def find_post
@@ -35,6 +45,6 @@ class PostsController < ApplicationController
   end
 
   def post_params
-    params.require(:post).permit(:name, :category_id, :body)
+    params.require(:post).permit(:id, :name, :category_id, :body)
   end
 end

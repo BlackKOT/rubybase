@@ -12,9 +12,9 @@ class Post < ActiveRecord::Base
   #TODO enable after changing code to pretty_preview integer
   after_validation :unescape_and_prepare
 
-  def as_json(options)
+  def as_json(options = {})
     # this example ignores the user's options
-    super(only: [:name, ], methods: [:path])
+    super(only: [:name, :body, :category_id], methods: [:path])
   end
 
   def path

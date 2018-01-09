@@ -1,6 +1,8 @@
 <template>
     <div>
-        <form id="new_post" :action="path" accept-charset="UTF-8" :method="method" class="new_post" @submit.prevent="validate" >
+        <form id="post_form" :action="path" accept-charset="UTF-8" method="post" class="new_post" @submit.prevent="validate($event)" >
+
+            <input v-if="mtd == 'put'" type="hidden" name="_method" value="put">
             <input name="utf8" value="✓" type="hidden">
             <input name="authenticity_token" :value="csrf_token" type="hidden">
             <div class="form-group row">
@@ -8,9 +10,10 @@
                     <div>
                         <label for="post_category">Category</label>
                         <select2 :options="categories_list"
+                                 :value="post.category_id"
                                  data-vv-name="category_id"
                                  v-validate="'required'"
-                                 v-model="category_id"
+                                 v-model="post.category_id"
                                  name="post[category_id]"
                                  id="post_category_id"
                                  placeholder="Select category" >
@@ -19,19 +22,19 @@
                     </div>
                     <div>
                         <label for="post_name">Name</label>
-                        <input v-model="post_name" data-vv-name="post_name" v-validate="'required'" name="post[name]" id="post_name" type="text">
+                        <input v-model="post.name" data-vv-name="post_name" v-validate="'required'" name="post[name]" id="post_name" type="text">
                         <p class="text-danger" v-if="errors.has('post_name')">{{ errors.first('post_name') }}</p>
                     </div>
                     <div>
                         <label for="post_body">Body</label>
-                        <textarea v-model="post_body" data-vv-name="post_body" v-validate="'required'" name="post[body]" id="post_body" class="form-control tinymce"></textarea>
+                        <textarea v-model="post.body" data-vv-name="post_body" v-validate="'required'" name="post[body]" id="post_body" class="form-control tinymce"></textarea>
                         <p class="text-danger" v-if="errors.has('post_body')">{{ errors.first('post_body') }}</p>
                     </div>
                     tinymce_assets
                     tinymce
                 </div>
             </div>
-            <button name="button" type="submit"  class="btn btn-default">Create Post</button>
+            <button name="button" type="submit"  class="btn btn-default">Save</button>
         </form>
     </div>
 </template>
@@ -50,29 +53,35 @@
         required: true,
       },
 
-      method: {
+      mtd: {
         type: String,
-        required: true,
+        default: ''
+      },
+      post_data: {
+//        type: Object,
+        default:  '{}'
       },
     },
     data: function() {
       return {
+        post: '',
         csrf_token: undefined,
-        post_name: '',
-        post_body: '',
-        category_id: undefined,
         categories_list: [],
       }
     },
     methods: {
-      validate() {
+      validate(event) {
+        event.preventDefault();
         this.$validator.validateAll().then(result => {
           if (result) {
-            return alert('success');
+            console.log(document.querySelector('#post_form').method);
+            document.querySelector('#post_form').submit();
+            return true
+//            alert('success');
           }
-
-          alert('failure');
-        })
+//          alert('failure');
+          return false
+        });
       },
     },
     created: function() {
@@ -84,7 +93,8 @@
           that.categories_list = res;
         }
       });
-
+      console.log(this.post);
+      this.post = JSON.parse(this.post_data);
     },
     computed: {
 
