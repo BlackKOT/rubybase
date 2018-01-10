@@ -27,11 +27,17 @@
                     </div>
                     <div>
                         <label for="post_body">Body</label>
-                        <textarea v-model="post.body" data-vv-name="post_body" v-validate="'required'" name="post[body]" id="post_body" class="form-control tinymce"></textarea>
+
+                        <tinymce  v-model="post.body"
+                                  data-vv-name="post_body"
+                                  v-validate="'required'"
+                                  name="post[body]"
+                                  id="post_body"
+                                  class="form-control tinymce"
+                                  :options="options" @change="changed" :content='content'>
+                        </tinymce>
                         <p class="text-danger" v-if="errors.has('post_body')">{{ errors.first('post_body') }}</p>
                     </div>
-                    tinymce_assets
-                    tinymce
                 </div>
             </div>
             <button name="button" type="submit"  class="btn btn-default">Save</button>
@@ -40,12 +46,19 @@
 </template>
 
 <script>
-
+//  require('tinymce')
+//  require('tinymce/themes/modern/theme')
   import select2 from './select2.vue'
+  import tinymce from 'tinymce/tinymce'
+  import 'tinymce/themes/modern/theme';
+  import 'tinymce/plugins/paste';
+  import 'tinymce/plugins/link';
+//  import TinyMCE from 'tinymce-vue-2';
 
   export default {
     components:{
       'select2': select2,
+//      'tiny-mce': TinyMCE,
     },
     props: {
       path: {
@@ -64,17 +77,37 @@
     },
     data: function() {
       return {
+        content: '',
+        options: {
+          mode : "textareas",
+          force_br_newlines : false,
+          force_p_newlines : false,
+          forced_root_block : '',
+          toolbar: 'mybutton',
+          setup: function (editor) {
+            editor.addButton('mybutton', {
+              text: 'My button',
+              icon: false,
+              onclick: function () {
+                editor.insertContent('&nbsp;<b>It\'s my button!</b>&nbsp;');
+              }
+            });
+          }
+        },
         post: '',
         csrf_token: undefined,
         categories_list: [],
       }
     },
     methods: {
+      changed (editor, content) {
+        this.post.post_body = content;
+      },
+
       validate(event) {
         event.preventDefault();
         this.$validator.validateAll().then(result => {
           if (result) {
-            console.log(document.querySelector('#post_form').method);
             document.querySelector('#post_form').submit();
             return true
 //            alert('success');
@@ -86,6 +119,7 @@
     },
     created: function() {
       this.csrf_token = document.getElementsByName('csrf-token')[0].getAttribute('content');
+
       var that = this;
       $.ajax({
         url: '/categories.json',
@@ -93,8 +127,8 @@
           that.categories_list = res;
         }
       });
-      console.log(this.post);
       this.post = JSON.parse(this.post_data);
+      this.content = this.post.body;
     },
     computed: {
 
@@ -102,3 +136,11 @@
 
   }
 </script>
+
+<style scoped>
+    @import url('//cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.3/skins/lightgray/skin.min.css');
+    @import url('//cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.3/skins/lightgray/content.min.css');
+    /*@import 'tinymce/skins/lightgray/skin.min.css';*/
+    /*@import 'tinymce/skins/lightgray/content.min.css';*/
+
+</style>

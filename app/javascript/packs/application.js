@@ -10,12 +10,18 @@
 console.log('Hello World from Webpacker');
 // console.log("Webpack suuuuuucks!");
 import Vue from 'vue/dist/vue.esm'
-// import paginate from '../components/paginate.vue'
+// import paginate from '../components/paginate.vue
+import VueTinymce from 'vue-tinymce'
+Vue.use(VueTinymce)
+// import vueTinymce from '@deveodk/vue-tinymce'
+// You need a specific loader for CSS files like https://github.com/webpack/css-loader
+// import '@deveodk/vue-tinymce/dist/@deveodk/vue-tinymce.css'
+// Vue.use(vueTinymce)
 import posts from '../components/posts.vue'
 import post_form from '../components/post_form.vue'
 
-import VeeValidate from 'vee-validate';
-Vue.use(VeeValidate);
+import VeeValidate from 'vee-validate'
+Vue.use(VeeValidate)
 
 var app = new Vue({
   el: '#app',
@@ -30,5 +36,5 @@ var app = new Vue({
     // }
   }
 });
-
+// /tinymce/skins/lightgray/skin.min.css
 
