@@ -55,7 +55,30 @@
   import 'tinymce/plugins/link';
 //  import TinyMCE from 'tinymce-vue-2';
 
-  export default {
+  var addButton = function(item) {
+    var blockquoteActive = tinyMCE.activeEditor.controlManager.get(item).isActive();
+    var selection = ed.selection.getContent();
+    if (blockquoteActive) {
+
+      if (selection) {
+        var parElem = ed.dom.getParent(ed.selection.getNode(), item);
+        var inner = parElem.innerHTML;
+        ed.dom.remove(parElem);
+        ed.selection.setContent(inner);
+      }
+      else return
+
+    }
+    else {
+      if (selection) {
+        ed.selection.setContent('<' + item + '>' + ed.selection.getContent() + '</' + item + '>');
+      }
+    }
+
+  }
+
+
+export default {
     components:{
       'select2': select2,
 //      'tiny-mce': TinyMCE,
@@ -75,23 +98,51 @@
         default:  '{}'
       },
     },
+  //<pre><code class="bash">TEXT</code></pre>
     data: function() {
+      var LanguagesArray = [
+        'codeblock', 'bash', 'yaml', 'javascript', 'coffeescript',
+        'css', 'json', 'erb', 'slim', 'haml', 'html', 'xml', 'ruby', 'sql'
+      ]
+
+      var language_formats = {}
+      var arrayLength = LanguagesArray.length
+      for (var i = 0; i < arrayLength; i++) {
+        language_formats[LanguagesArray[i]] = {inline: 'code', attributes: {class: LanguagesArray[i]}}
+      }
+      language_formats['pre'] = {block: 'pre'}
+
       return {
         content: '',
+
         options: {
-          mode : "textareas",
-          force_br_newlines : false,
-          force_p_newlines : false,
-          forced_root_block : '',
-          toolbar: 'mybutton',
+          width: '600',
+          branding: false,
+//          mode: "textareas",
+          force_br_newlines: false,
+          force_p_newlines: false,
+          forced_root_block: '',
+          menubar: 'edit view format',
+          formats: language_formats,
+//          plugins : 'advlist autolink link image lists charmap print preview',
+          toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
+          toolbar2: LanguagesArray.join(' | '),
+
           setup: function (editor) {
-            editor.addButton('mybutton', {
-              text: 'My button',
-              icon: false,
-              onclick: function () {
-                editor.insertContent('&nbsp;<b>It\'s my button!</b>&nbsp;');
-              }
-            });
+            console.log(language_formats)
+            var arrayLength = LanguagesArray.length;
+            for (var i = 0; i < arrayLength; i++) {
+              var tmpLanguage = LanguagesArray[i]
+              editor.addButton(tmpLanguage, {
+                text: tmpLanguage,
+                icon: false,
+                onclick: function (e) {
+//                  addButton(LanguagesArray[i]);
+                  tinymce.activeEditor.formatter.toggle(this.settings.text)
+
+                }
+              })
+            }
           }
         },
         post: '',

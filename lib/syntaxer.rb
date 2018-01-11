@@ -8,7 +8,7 @@ class Syntaxer
 
   def self.prepare_html(text, line_numbers = true)
     #text.gsub!(/<pre>|<\/pre>/, '')
-    text.gsub(/<pre.*?><code.*?>(.*?)<\/code><\/pre>/mix) do |res|
+    text.gsub(/<code.*?>(.*?)<\/code>/mix) do |res|
       lang = res[/<code\s*class="(?<lang>\w*)"/,1].to_s.split('_code').first
 
       <<-MAIN

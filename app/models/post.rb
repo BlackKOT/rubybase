@@ -33,6 +33,7 @@ class Post < ActiveRecord::Base
     if errors.empty?
       self.pretty_preview = Syntaxer.prepare_html(Previewer.prepare_preview(self.body), false).length  # .gsub(/<img[^>]*>/, '')
       self.pretty_body = Syntaxer.prepare_html(self.body)  # .gsub(/<img[^>]*>/, '')
+      i=0
     end
   end
 end
