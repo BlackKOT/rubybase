@@ -78,6 +78,11 @@ export default {
     },
   //<pre><code class="bash">TEXT</code></pre>
     data: function() {
+      var code_style = "" +
+        "code.ruby:before{background: url('/assets/languages/ruby.png') CENTER CENTER NO-REPEAT; content: url('/assets/1x16.png'); width:16px;} " +
+        "code{padding: 1px; padding-left: 4px; border: #AAA 1px solid; border-radius: 8px}"
+
+
       var LanguagesArray = [
         'codeblock', 'bash', 'yaml', 'javascript', 'coffeescript',
         'css', 'json', 'erb', 'slim', 'haml', 'html', 'xml', 'ruby', 'sql'
@@ -95,6 +100,7 @@ export default {
 
         options: {
           width: '600',
+          content_style: code_style,
           branding: false,
 //          mode: "textareas",
           force_br_newlines: false,
