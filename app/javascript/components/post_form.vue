@@ -53,29 +53,7 @@
   import 'tinymce/themes/modern/theme';
   import 'tinymce/plugins/paste';
   import 'tinymce/plugins/link';
-//  import TinyMCE from 'tinymce-vue-2';
 
-  var addButton = function(item) {
-    var blockquoteActive = tinyMCE.activeEditor.controlManager.get(item).isActive();
-    var selection = ed.selection.getContent();
-    if (blockquoteActive) {
-
-      if (selection) {
-        var parElem = ed.dom.getParent(ed.selection.getNode(), item);
-        var inner = parElem.innerHTML;
-        ed.dom.remove(parElem);
-        ed.selection.setContent(inner);
-      }
-      else return
-
-    }
-    else {
-      if (selection) {
-        ed.selection.setContent('<' + item + '>' + ed.selection.getContent() + '</' + item + '>');
-      }
-    }
-
-  }
 
 
 export default {
