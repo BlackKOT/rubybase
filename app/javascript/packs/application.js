@@ -11,8 +11,6 @@ console.log('Hello World from Webpacker');
 // console.log("Webpack suuuuuucks!");
 import Vue from 'vue/dist/vue.esm'
 // import paginate from '../components/paginate.vue
-import VueTinymce from 'vue-tinymce'
-Vue.use(VueTinymce)
 // import vueTinymce from '@deveodk/vue-tinymce'
 // You need a specific loader for CSS files like https://github.com/webpack/css-loader
 // import '@deveodk/vue-tinymce/dist/@deveodk/vue-tinymce.css'

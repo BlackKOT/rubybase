@@ -27,15 +27,14 @@
                     </div>
                     <div>
                         <label for="post_body">Body</label>
+                        <summernote
+                                v-validate="'required'"
+                                name="post[body]"
+                                :model="content"
+                                @change="value => { content = value }"
+                                :config="config"
+                        ></summernote>
 
-                        <tinymce  v-model="post.body"
-                                  data-vv-name="post_body"
-                                  v-validate="'required'"
-                                  name="post[body]"
-                                  id="post_body"
-                                  class="form-control tinymce"
-                                  :options="options" @change="changed" :content='content'>
-                        </tinymce>
                         <p class="text-danger" v-if="errors.has('post_body')">{{ errors.first('post_body') }}</p>
                     </div>
                 </div>
@@ -46,20 +45,14 @@
 </template>
 
 <script>
-//  require('tinymce')
-//  require('tinymce/themes/modern/theme')
   import select2 from './select2.vue'
-  import tinymce from 'tinymce/tinymce'
-  import 'tinymce/themes/modern/theme';
-  import 'tinymce/plugins/paste';
-  import 'tinymce/plugins/link';
-
-
+  import VueSummernote from './summernote.vue'
+//  require('summernote/dist/summernote.css')
 
 export default {
     components:{
       'select2': select2,
-//      'tiny-mce': TinyMCE,
+      'summernote' : VueSummernote,
     },
     props: {
       path: {
@@ -72,63 +65,75 @@ export default {
         default: ''
       },
       post_data: {
-//        type: Object,
         default:  '{}'
       },
     },
   //<pre><code class="bash">TEXT</code></pre>
     data: function() {
-      var code_style = "" +
-        "code.ruby:before{background: url('/assets/languages/ruby.png') CENTER CENTER NO-REPEAT; content: url('/assets/1x16.png'); width:16px;} " +
-        "code{padding: 1px; padding-left: 4px; border: #AAA 1px solid; border-radius: 8px}"
-
-
-      var LanguagesArray = [
-        'codeblock', 'bash', 'yaml', 'javascript', 'coffeescript',
-        'css', 'json', 'erb', 'slim', 'haml', 'html', 'xml', 'ruby', 'sql'
-      ]
-
-      var language_formats = {}
-      var arrayLength = LanguagesArray.length
-      for (var i = 0; i < arrayLength; i++) {
-        language_formats[LanguagesArray[i]] = {inline: 'code', attributes: {class: LanguagesArray[i]}}
-      }
-      language_formats['pre'] = {block: 'pre'}
+//      var code_style = "" +
+//        "code.ruby:before{background: url('/assets/languages/ruby.png') CENTER CENTER NO-REPEAT; content: url('/assets/1x16.png'); width:16px;} " +
+//        "code{padding: 1px; padding-left: 4px; border: #AAA 1px solid; border-radius: 8px}"
+//
+//
+//      var LanguagesArray = [
+//        'codeblock', 'bash', 'yaml', 'javascript', 'coffeescript',
+//        'css', 'json', 'erb', 'slim', 'haml', 'html', 'xml', 'ruby', 'sql'
+//      ]
+//
+//      var language_formats = {}
+//      var arrayLength = LanguagesArray.length
+//      for (var i = 0; i < arrayLength; i++) {
+//        language_formats[LanguagesArray[i]] = {inline: 'code', attributes: {class: LanguagesArray[i]}}
+//      }
+//      language_formats['pre'] = {block: 'pre'}
 
       return {
-        content: '',
-
-        options: {
-          width: '600',
-          content_style: code_style,
-          branding: false,
-//          mode: "textareas",
-          force_br_newlines: false,
-          force_p_newlines: false,
-          forced_root_block: '',
-          menubar: 'edit view format',
-          formats: language_formats,
-//          plugins : 'advlist autolink link image lists charmap print preview',
-          toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
-          toolbar2: LanguagesArray.join(' | '),
-
-          setup: function (editor) {
-            console.log(language_formats)
-            var arrayLength = LanguagesArray.length;
-            for (var i = 0; i < arrayLength; i++) {
-              var tmpLanguage = LanguagesArray[i]
-              editor.addButton(tmpLanguage, {
-                text: tmpLanguage,
-                icon: false,
-                onclick: function (e) {
-//                  addButton(LanguagesArray[i]);
-                  tinymce.activeEditor.formatter.toggle(this.settings.text)
-
-                }
-              })
-            }
-          }
+//        content: '',
+        content: null,
+        // ↓ It is what the configuration object looks like. ↓
+        config: {
+          height: 100,
+          toolbar: [
+            // [groupName, [list of button]]
+            ['style', ['bold', 'italic', 'underline', 'clear']],
+            ['font', ['strikethrough', 'superscript', 'subscript']],
+            ['fontsize', ['fontsize']],
+            ['color', ['color']],
+            ['para', ['ul', 'ol', 'paragraph']],
+            ['insert', ['gxcode']], // plugin config: summernote-ext-codewrapper
+          ],
         },
+//        options: {
+//          width: '600',
+//          content_style: code_style,
+//          branding: false,
+////          mode: "textareas",
+//          force_br_newlines: false,
+//          force_p_newlines: false,
+//          forced_root_block: '',
+//          menubar: 'edit view format',
+//          formats: language_formats,
+////          plugins : 'advlist autolink link image lists charmap print preview',
+//          toolbar1: 'undo redo | styleselect | bold italic | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | table | fontsizeselect',
+//          toolbar2: LanguagesArray.join(' | '),
+//
+//          setup: function (editor) {
+//            console.log(language_formats)
+//            var arrayLength = LanguagesArray.length;
+//            for (var i = 0; i < arrayLength; i++) {
+//              var tmpLanguage = LanguagesArray[i]
+//              editor.addButton(tmpLanguage, {
+//                text: tmpLanguage,
+//                icon: false,
+//                onclick: function (e) {
+////                  addButton(LanguagesArray[i]);
+//                  tinymce.activeEditor.formatter.toggle(this.settings.text)
+//
+//                }
+//              })
+//            }
+//          }
+//        },
         post: '',
         csrf_token: undefined,
         categories_list: [],
@@ -173,9 +178,5 @@ export default {
 </script>
 
 <style scoped>
-    @import url('//cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.3/skins/lightgray/skin.min.css');
-    @import url('//cdnjs.cloudflare.com/ajax/libs/tinymce/4.6.3/skins/lightgray/content.min.css');
-    /*@import 'tinymce/skins/lightgray/skin.min.css';*/
-    /*@import 'tinymce/skins/lightgray/content.min.css';*/
 
 </style>
