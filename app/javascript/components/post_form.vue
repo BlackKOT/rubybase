@@ -92,7 +92,8 @@ export default {
         content: null,
         // ↓ It is what the configuration object looks like. ↓
         config: {
-          height: 100,
+          height: 400,
+          width: 600,
           toolbar: [
             // [groupName, [list of button]]
             ['style', ['bold', 'italic', 'underline', 'clear']],
@@ -100,8 +101,88 @@ export default {
             ['fontsize', ['fontsize']],
             ['color', ['color']],
             ['para', ['ul', 'ol', 'paragraph']],
+            ['misc', ['undo', 'redo', 'codeview']],
             ['insert', ['gxcode']], // plugin config: summernote-ext-codewrapper
+            ['languages', ['clean_text', 'raw_code', 'ruby_code', 'erb_code', 'haml_code', 'html_code', 'css_code', 'coffeescript', 'javascript_code',
+              'json_code', 'xml_code', 'yaml_code', 'sql_code', 'bash']],
           ],
+          //ORDER is important here !!!
+          buttons: {
+            clean_text: this.HelloButton,
+            raw_code:  this.HelloButton,
+            ruby_code: this.HelloButton,
+            erb_code: this.HelloButton,
+            haml_code: this.HelloButton,
+            html_code: this.HelloButton,
+            css_code: this.HelloButton,
+            coffeescript: this.HelloButton,
+            javascript_code: this.HelloButton,
+            json_code: this.HelloButton,
+            xml_code: this.HelloButton,
+            yaml_code: this.HelloButton,
+            sql_code: this.HelloButton,
+            bash: this.HelloButton,
+
+          },
+//          buttons: {
+//            "raw_code": {
+//              "title": 'Raw code block',
+//              "callback": this.raw_code_callback
+//            },
+//            "clean_text": {
+//              "title": 'Clean selection formatting',
+//              "callback": this.clean_text_callback
+//            },
+//            "ruby_code": {
+//              "title": 'Ruby block',
+//              "callback": this.language_callback
+//            },
+//            "erb_code": {
+//              "title": 'ERB block',
+//              "callback": this.language_callback
+//            },
+//            "haml_code": {
+//              "title": 'HAML block',
+//              "callback": this.language_callback
+//            },
+//            "html_code": {
+//              "title": 'HTML block',
+//              "callback": this.language_callback
+//            },
+//            "css_code": {
+//              "title": 'CSS block',
+//              "callback": this.language_callback
+//            },
+//            "javascript_code": {
+//              "title": 'Javascript block',
+//              "callback": this.language_callback
+//            },
+//            "json_code": {
+//              "title": 'JSON block',
+//              "callback": this.language_callback
+//            },
+//            "xml_code": {
+//              "title": 'XML block',
+//              "callback": this.language_callback
+//            },
+//            "yaml_code": {
+//              "title": 'YAML block',
+//              "callback": this.language_callback
+//            },
+//            "sql_code": {
+//              "title": 'SQL block',
+//              "callback": this.language_callback
+//            },
+//            "bash": {
+//              "title": 'Bash block',
+//              "callback": this.language_callback
+//            },
+//            "coffeescript": {
+//              "title": 'CoffeeScript block',
+//              "callback": this.language_callback
+//            }
+//          }
+
         },
 //        options: {
 //          width: '600',
@@ -156,7 +237,44 @@ export default {
           return false
         });
       },
+      HelloButton(context) {
+        console.log(context);
+        var button_index = window.button_index || 0;
+        var key = Object.keys(context.options.buttons)[button_index]
+        console.log(key);
+        var ui = context.ui;
+
+        // create button
+        var button = ui.button({
+          contents: '<i class="fa fa-child"/>' + key,
+          click: function () {
+            // invoke insertText method with 'hello' on editor module.
+            context.invoke('editor.insertText', key);
+          }
+        });
+        window.button_index = button_index + 1;
+        return button.render();   // return button as jquery object
+      },
+      language_callback(obj, event, key)  {
+        var selected = obj.$el.getSelected();
+        if (selected.length == 0)
+          selected = "&nbsp;";
+        obj.$el.insertHtml("<code class='" + key + "'>" + selected + "</code>");
+//          move cursor inner tag
+      },
+
+      clean_text_callback(obj, event, key) {
+        var html = obj.getSelectedHtml();
+        html = html.replace(/(<([^>]+)>)/ig,"");
+        obj.insertHtml(html);
+      },
+
+      raw_code_callback(obj, event, key) {
+        var selected = obj.$el.getSelected();
+        obj.$el.insertHtml("<pre>" + selected + "</pre>");
+      },
     },
+
     created: function() {
       this.csrf_token = document.getElementsByName('csrf-token')[0].getAttribute('content');
 
