@@ -28,6 +28,8 @@
                     <div>
                         <label for="post_body">Body</label>
                         <summernote
+                                v-model="post.body"
+                                data-vv-name="post_body"
                                 v-validate="'required'"
                                 name="post[body]"
                                 :model="content"
