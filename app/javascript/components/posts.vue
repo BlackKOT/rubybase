@@ -11,7 +11,7 @@
                     </a></li></ul>
         </form>
         <div>
-            <paginate :click-handler="clickCallback" :page-count="pagesAmount" :items-limit="8" container-class="pagination" next-text="next" prev-text="prev" ref="paginator">
+            <paginate :click-handler="clickCallback" :page-count="pagesAmount" :items-limit="30" container-class="pagination" next-text="next" prev-text="prev" ref="paginator">
               <span slot="prevContent">
                 Changed previous button
               </span>

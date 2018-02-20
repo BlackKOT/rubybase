@@ -2,8 +2,12 @@
   "_/_/node_modules/summernote/dist/font/summernote.eot": "/packs/_/_/node_modules/summernote/dist/font/summernote-6e72b5d181d3c1793e710327dadc1ab4.eot",
   "_/_/node_modules/summernote/dist/font/summernote.ttf?e557617934c52ea068954af79ed7c221": "/packs/_/_/node_modules/summernote/dist/font/summernote-6887f295e5fd80996fbddcfed04c800e.ttf",
   "_/_/node_modules/summernote/dist/font/summernote.woff?e557617934c52ea068954af79ed7c221": "/packs/_/_/node_modules/summernote/dist/font/summernote-6286ad0a74aea27acf0cd3400e448d8a.woff",
-  "application.css": "/packs/application-7a4c1624b3add3dd445d0a8223c8735c.css",
-  "application.css.map": "/packs/application-7a4c1624b3add3dd445d0a8223c8735c.css.map",
-  "application.js": "/packs/application-852a236a92079cc9e2d4.js",
-  "application.js.map": "/packs/application-852a236a92079cc9e2d4.js.map"
+  "application.css": "/packs/application-6c2f15d453eee3f35d75b83dce500b72.css",
+  "application.css.map": "/packs/application-6c2f15d453eee3f35d75b83dce500b72.css.map",
+  "application.js": "/packs/application-6f7f2bbe567eafb0d19e.js",
+  "application.js.map": "/packs/application-6f7f2bbe567eafb0d19e.js.map",
+  "bootstrap.css": "/packs/bootstrap-b21fb3335e0b9a0f3b93f16f1d092118.css",
+  "bootstrap.css.map": "/packs/bootstrap-b21fb3335e0b9a0f3b93f16f1d092118.css.map",
+  "bootstrap.js": "/packs/bootstrap-47ab527fc18a8a25d1fc.js",
+  "bootstrap.js.map": "/packs/bootstrap-47ab527fc18a8a25d1fc.js.map"
 }
